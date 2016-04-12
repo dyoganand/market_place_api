@@ -15,12 +15,12 @@ ActiveRecord::Schema.define(version: 20160411124055) do
 
   create_table "orders", force: true do |t|
     t.integer  "user_id"
-    t.decimal  "total"
+    t.decimal  "total",      precision: 10, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "orders", ["user_id"], name: "index_orders_on_user_id"
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "placements", force: true do |t|
     t.integer  "order_id"
@@ -30,20 +30,20 @@ ActiveRecord::Schema.define(version: 20160411124055) do
     t.integer  "quantity",   default: 0
   end
 
-  add_index "placements", ["order_id"], name: "index_placements_on_order_id"
-  add_index "placements", ["product_id"], name: "index_placements_on_product_id"
+  add_index "placements", ["order_id"], name: "index_placements_on_order_id", using: :btree
+  add_index "placements", ["product_id"], name: "index_placements_on_product_id", using: :btree
 
   create_table "products", force: true do |t|
-    t.string   "title",      default: ""
-    t.decimal  "price",      default: 0.0
-    t.boolean  "published",  default: false
+    t.string   "title",                               default: ""
+    t.decimal  "price",      precision: 10, scale: 0, default: 0
+    t.boolean  "published",                           default: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "quantity",   default: 0
+    t.integer  "quantity",                            default: 0
   end
 
-  add_index "products", ["user_id"], name: "index_products_on_user_id"
+  add_index "products", ["user_id"], name: "index_products_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -61,8 +61,8 @@ ActiveRecord::Schema.define(version: 20160411124055) do
     t.string   "auth_token",             default: ""
   end
 
-  add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
